@@ -5,18 +5,18 @@ import android.support.annotation.ColorInt;
 /**
  * Factory used to specify a custom logic to use different tint colors to tint divider's drawables.
  * <br>
- * You can add a custom {@link TintFactory} in your {@link RecyclerViewDivider.Builder} using
- * {@link RecyclerViewDivider.Builder#tintFactory(TintFactory)} method
+ * You can add a custom {@link TintProvider} in your {@link RecyclerViewDivider.Builder} using
+ * {@link RecyclerViewDivider.Builder#tintFactory(TintProvider)} method
  */
-public abstract class TintFactory {
+public abstract class TintProvider {
 
     /**
-     * Creates a new {@link TintFactory} with equal tint color for all dividers's drawables
+     * Creates a new {@link TintProvider} with equal tint color for all dividers's drawables
      *
      * @param tint tint color for dividers' drawables
      * @return factory with same values for each divider
      */
-    public static TintFactory getGeneralFactory(@ColorInt int tint) {
+    public static TintProvider getGeneralFactory(@ColorInt int tint) {
         return new General(tint);
     }
 
@@ -32,9 +32,9 @@ public abstract class TintFactory {
     public abstract int tintForItem(int groupCount, int groupIndex);
 
     /**
-     * General instance of a {@link TintFactory} used when the tint color is set with {@link RecyclerViewDivider.Builder#tint(int)}
+     * General instance of a {@link TintProvider} used when the tint color is set with {@link RecyclerViewDivider.Builder#tint(int)}
      */
-    private static class General extends TintFactory {
+    private static class General extends TintProvider {
         @ColorInt
         private final int tint;
 

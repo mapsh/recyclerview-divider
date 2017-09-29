@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
 
     fun init() {
-        recyclerView.layoutManager = GridLayoutManager(this,3)
-        recyclerView.adapter = Adapter(mutableListOf("1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3"))
+        recyclerView.layoutManager = GridLayoutManager(this,4)
+        recyclerView.adapter = Adapter(mutableListOf("1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1"))
         RecyclerViewDivider.with(this)
                 .size(1)
                 .build()

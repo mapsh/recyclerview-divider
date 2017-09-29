@@ -30,28 +30,28 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private final
     @Type
     int mType;
-    private final VisibilityFactory mVisibilityFactory;
-    private final DrawableFactory mDrawableFactory;
-    private final TintFactory mTintFactory;
-    private final SizeFactory mSizeFactory;
-    private final MarginFactory mMarginFactory;
+    private final VisibilityProvider mVisibilityFactory;
+    private final DrawableProvider mDrawableFactory;
+    private final TintProvider mTintFactory;
+    private final SizeProvider mSizeFactory;
+    private final MarginProvider mMarginFactory;
 
     /**
      * Set the {@link Builder} for this {@link RecyclerViewDivider}
      *
      * @param type              divider's type (one of {@link Type})
-     * @param visibilityFactory instance of {@link VisibilityFactory} taken from {@link Builder}
-     * @param drawableFactory   instance of {@link DrawableFactory} taken from {@link Builder}
-     * @param tintFactory       instance of {@link TintFactory} taken from {@link Builder}
-     * @param sizeFactory       instance of {@link SizeFactory} taken from {@link Builder}
-     * @param marginFactory     instance of {@link MarginFactory} taken from {@link Builder}
+     * @param visibilityFactory instance of {@link VisibilityProvider} taken from {@link Builder}
+     * @param drawableFactory   instance of {@link DrawableProvider} taken from {@link Builder}
+     * @param tintFactory       instance of {@link TintProvider} taken from {@link Builder}
+     * @param sizeFactory       instance of {@link SizeProvider} taken from {@link Builder}
+     * @param marginFactory     instance of {@link MarginProvider} taken from {@link Builder}
      */
     private RecyclerViewDivider(@Type int type,
-                                @NonNull VisibilityFactory visibilityFactory,
-                                @NonNull DrawableFactory drawableFactory,
-                                @Nullable TintFactory tintFactory,
-                                @NonNull SizeFactory sizeFactory,
-                                @NonNull MarginFactory marginFactory) {
+                                @NonNull VisibilityProvider visibilityFactory,
+                                @NonNull DrawableProvider drawableFactory,
+                                @Nullable TintProvider tintFactory,
+                                @NonNull SizeProvider sizeFactory,
+                                @NonNull MarginProvider marginFactory) {
 
         mType = type;
         mVisibilityFactory = visibilityFactory;
@@ -115,9 +115,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
             Drawable divider = mDrawableFactory.drawableForItem(groupCount, groupIndex);
-            @VisibilityFactory.Show int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
+            @VisibilityProvider.Show
+            int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
 
-            if (divider == null || showDivider == VisibilityFactory.SHOW_NONE) continue;
+            if (divider == null || showDivider == VisibilityProvider.SHOW_NONE) continue;
 
             final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
 
@@ -136,8 +137,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             int halfSize = size < 2 ? size : size / 2;
 
-            size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
-            halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
+            size = showDivider == VisibilityProvider.SHOW_ITEMS_ONLY ? 0 : size;
+            halfSize = showDivider == VisibilityProvider.SHOW_GROUP_ONLY ? 0 : halfSize;
 
             final int childBottom = child.getBottom();
             final int childTop = child.getTop();
@@ -311,8 +312,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
         final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-        @VisibilityFactory.Show int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
-        if (showDivider == VisibilityFactory.SHOW_NONE)
+        @VisibilityProvider.Show int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
+        if (showDivider == VisibilityProvider.SHOW_NONE)
             return;
 
         final int orientation = RecyclerViewDividerUtils.getOrientation(parent);
@@ -327,8 +328,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         int halfSize = size / 2 + marginSize;
 
-        size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
-        halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
+        size = showDivider == VisibilityProvider.SHOW_ITEMS_ONLY ? 0 : size;
+        halfSize = showDivider == VisibilityProvider.SHOW_GROUP_ONLY ? 0 : halfSize;
 
         if (orientation == RecyclerView.VERTICAL) {
             if (spanCount == 1 || spanSize == spanCount) {
@@ -375,11 +376,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * <br>
      * And use these custom factories:
      * <ul>
-     * <li><b>{@link VisibilityFactory}:</b> {@link #visibilityFactory(VisibilityFactory)}</li>
-     * <li><b>{@link DrawableFactory}:</b> {@link #drawableFactory(DrawableFactory)}</li>
-     * <li><b>{@link TintFactory}:</b> {@link #tintFactory(TintFactory)}</li>
-     * <li><b>{@link SizeFactory}:</b> {@link #sizeFactory(SizeFactory)}</li>
-     * <li><b>{@link MarginFactory}:</b> {@link #marginFactory(MarginFactory)}</li>
+     * <li><b>{@link VisibilityProvider}:</b> {@link #visibilityFactory(VisibilityProvider)}</li>
+     * <li><b>{@link DrawableProvider}:</b> {@link #drawableFactory(DrawableProvider)}</li>
+     * <li><b>{@link TintProvider}:</b> {@link #tintFactory(TintProvider)}</li>
+     * <li><b>{@link SizeProvider}:</b> {@link #sizeFactory(SizeProvider)}</li>
+     * <li><b>{@link MarginProvider}:</b> {@link #marginFactory(MarginProvider)}</li>
      * </ul>
      */
     public static class Builder {
@@ -395,11 +396,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private int marginSize;
         private boolean hideLastDivider;
 
-        private VisibilityFactory visibilityFactory;
-        private DrawableFactory drawableFactory;
-        private TintFactory tintFactory;
-        private SizeFactory sizeFactory;
-        private MarginFactory marginFactory;
+        private VisibilityProvider visibilityFactory;
+        private DrawableProvider drawableFactory;
+        private TintProvider tintFactory;
+        private SizeProvider sizeFactory;
+        private MarginProvider marginFactory;
 
         @Type
         private int type;
@@ -431,7 +432,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         /**
          * Set the color of all dividers. This method can't be used with {@link #drawable(Drawable)} or {@link #tint(int)}
          * <br>
-         * To set a custom color for each divider use {@link #drawableFactory(DrawableFactory)} instead
+         * To set a custom color for each divider use {@link #drawableFactory(DrawableProvider)} instead
          *
          * @param color resolved color for this divider, not a resource
          * @return {@link Builder} instance
@@ -446,7 +447,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * Set the drawable of all dividers. This method can't be used with {@link #color(int)}.
          * If you want to color the drawable, you have to use {@link #tint(int)} instead.
          * <br>
-         * To set a custom drawable for each divider use {@link #drawableFactory(DrawableFactory)} instead.
+         * To set a custom drawable for each divider use {@link #drawableFactory(DrawableProvider)} instead.
          * <br>
          * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
@@ -463,7 +464,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * Set the tint color of all dividers' drawables.
          * If you want to create a plain divider with a single color, {@link #color(int)} is recommended.
          * <br>
-         * To set a custom tint color for each divider's drawable use {@link #tintFactory(TintFactory)} instead
+         * To set a custom tint color for each divider's drawable use {@link #tintFactory(TintProvider)} instead
          *
          * @param color color that will be used as drawable's tint
          * @return {@link Builder} instance
@@ -480,7 +481,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * <li><b>RecyclerView.HORIZONTAL:</b> the width will be equal to the size and the height will be equal to the sum of container's height and the margin size</li>
          * </ul>
          * <br>
-         * To set a custom size for each divider use {@link #sizeFactory(SizeFactory)} instead.
+         * To set a custom size for each divider use {@link #sizeFactory(SizeProvider)} instead.
          *
          * @param size size in pixels for this divider
          * @return {@link Builder} instance
@@ -497,7 +498,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * <li><b>RecyclerView.HORIZONTAL:</b> margins will be added equally to the top and to the bottom</li>
          * </ul>
          * <br>
-         * To set a custom margin size for each divider use {@link #sizeFactory(SizeFactory)} instead.
+         * To set a custom margin size for each divider use {@link #sizeFactory(SizeProvider)} instead.
          *
          * @param marginSize margins' size in pixels for this divider
          * @return {@link Builder} instance
@@ -512,7 +513,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * <br>
          * Warning: when the spanCount is major than 1 (e.g. LinearLayoutManager), only the divider after the last group will be hidden, the items' dividers, instead, will be shown.
          * <br>
-         * If you want to specify a more flexible behaviour, use {@link #visibilityFactory(VisibilityFactory)} instead.
+         * If you want to specify a more flexible behaviour, use {@link #visibilityFactory(VisibilityProvider)} instead.
          *
          * @return {@link Builder} instance
          */
@@ -522,61 +523,61 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's custom {@link VisibilityFactory}
+         * Set the divider's custom {@link VisibilityProvider}
          * <br>
          * If you want to hide only the last divider use {@link #hideLastDivider()} instead.
          *
-         * @param visibilityFactory custom {@link VisibilityFactory} to set
+         * @param visibilityFactory custom {@link VisibilityProvider} to set
          * @return {@link Builder} instance
          */
-        public Builder visibilityFactory(@Nullable VisibilityFactory visibilityFactory) {
+        public Builder visibilityFactory(@Nullable VisibilityProvider visibilityFactory) {
             this.visibilityFactory = visibilityFactory;
             return this;
         }
 
         /**
-         * Set the divider's custom {@link DrawableFactory}
+         * Set the divider's custom {@link DrawableProvider}
          * <br>
          * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
-         * @param drawableFactory custom {@link DrawableFactory} to set
+         * @param drawableFactory custom {@link DrawableProvider} to set
          * @return {@link Builder} instance
          */
-        public Builder drawableFactory(@Nullable DrawableFactory drawableFactory) {
+        public Builder drawableFactory(@Nullable DrawableProvider drawableFactory) {
             this.drawableFactory = drawableFactory;
             return this;
         }
 
         /**
-         * Set the divider's custom {@link TintFactory}
+         * Set the divider's custom {@link TintProvider}
          *
-         * @param tintFactory custom {@link TintFactory} to set
+         * @param tintFactory custom {@link TintProvider} to set
          * @return {@link Builder} instance
          */
-        public Builder tintFactory(@Nullable TintFactory tintFactory) {
+        public Builder tintFactory(@Nullable TintProvider tintFactory) {
             this.tintFactory = tintFactory;
             return this;
         }
 
         /**
-         * Set the divider's custom {@link SizeFactory}
+         * Set the divider's custom {@link SizeProvider}
          *
-         * @param sizeFactory custom {@link SizeFactory} to set
+         * @param sizeFactory custom {@link SizeProvider} to set
          * @return {@link Builder} instance
          */
-        public Builder sizeFactory(@Nullable SizeFactory sizeFactory) {
+        public Builder sizeFactory(@Nullable SizeProvider sizeFactory) {
             this.sizeFactory = sizeFactory;
             return this;
         }
 
 
         /**
-         * Set the divider's custom {@link MarginFactory}
+         * Set the divider's custom {@link MarginProvider}
          *
-         * @param marginFactory custom {@link MarginFactory} to set
+         * @param marginFactory custom {@link MarginProvider} to set
          * @return {@link Builder} instance
          */
-        public Builder marginFactory(@Nullable MarginFactory marginFactory) {
+        public Builder marginFactory(@Nullable MarginProvider marginFactory) {
             this.marginFactory = marginFactory;
             return this;
         }
@@ -600,9 +601,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             if (visibilityFactory == null) {
                 if (hideLastDivider) {
-                    visibilityFactory = VisibilityFactory.getLastItemInvisibleFactory();
+                    visibilityFactory = VisibilityProvider.getLastItemInvisibleFactory();
                 } else {
-                    visibilityFactory = VisibilityFactory.getDefault();
+                    visibilityFactory = VisibilityProvider.getDefault();
                 }
             }
 
@@ -610,9 +611,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             if (sizeFactory == null) {
                 if (size == INT_DEF) {
-                    sizeFactory = SizeFactory.getDefault(context);
+                    sizeFactory = SizeProvider.getDefault(context);
                 } else {
-                    sizeFactory = SizeFactory.getGeneralFactory(size);
+                    sizeFactory = SizeProvider.getGeneralFactory(size);
                 }
             }
 
@@ -636,9 +637,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         break;
                 }
                 if (currDrawable == null) {
-                    drawableFactory = DrawableFactory.getDefault(context);
+                    drawableFactory = DrawableProvider.getDefault(context);
                 } else {
-                    drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
+                    drawableFactory = DrawableProvider.getGeneralFactory(currDrawable);
                 }
             }
 
@@ -646,7 +647,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             if (tintFactory == null) {
                 if (tint != null) {
-                    tintFactory = TintFactory.getGeneralFactory(tint);
+                    tintFactory = TintProvider.getGeneralFactory(tint);
                 }
             }
 
@@ -654,9 +655,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             if (marginFactory == null) {
                 if (marginSize == INT_DEF) {
-                    marginFactory = MarginFactory.getDefault(context);
+                    marginFactory = MarginProvider.getDefault(context);
                 } else {
-                    marginFactory = MarginFactory.getGeneralFactory(marginSize);
+                    marginFactory = MarginProvider.getGeneralFactory(marginSize);
                 }
             }
 

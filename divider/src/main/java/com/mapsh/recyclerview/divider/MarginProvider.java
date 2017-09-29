@@ -8,20 +8,20 @@ import android.support.annotation.NonNull;
  * <br>
  * Custom margins will be set equally right/left with horizontal divider and top/bottom with vertical divider.
  * <br>
- * You can add a custom {@link MarginFactory} in your {@link RecyclerViewDivider.Builder} using
- * {@link RecyclerViewDivider.Builder#marginFactory(MarginFactory)} method
+ * You can add a custom {@link MarginProvider} in your {@link RecyclerViewDivider.Builder} using
+ * {@link RecyclerViewDivider.Builder#marginFactory(MarginProvider)} method
  */
-public abstract class MarginFactory {
+public abstract class MarginProvider {
 
-    private static MarginFactory defaultFactory;
+    private static MarginProvider defaultFactory;
 
     /**
-     * Creates a singleton instance of a default {@link MarginFactory} to avoid multiple instance of the same class
+     * Creates a singleton instance of a default {@link MarginProvider} to avoid multiple instance of the same class
      *
      * @param context current context
      * @return factory with default values
      */
-    public static synchronized MarginFactory getDefault(@NonNull Context context) {
+    public static synchronized MarginProvider getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
             defaultFactory = new Default(context);
         }
@@ -29,12 +29,12 @@ public abstract class MarginFactory {
     }
 
     /**
-     * Creates a new {@link MarginFactory} with equal margin size for all dividers
+     * Creates a new {@link MarginProvider} with equal margin size for all dividers
      *
      * @param marginSize margins' size of the dividers
      * @return factory with same values for each divider
      */
-    public static MarginFactory getGeneralFactory(int marginSize) {
+    public static MarginProvider getGeneralFactory(int marginSize) {
         return new General(marginSize);
     }
 
@@ -50,9 +50,9 @@ public abstract class MarginFactory {
     public abstract int marginSizeForItem(int groupCount, int groupIndex);
 
     /**
-     * Default instance of a {@link MarginFactory}
+     * Default instance of a {@link MarginProvider}
      */
-    private static class Default extends MarginFactory {
+    private static class Default extends MarginProvider {
         private final int defaultMarginSize;
 
         Default(Context context) {
@@ -66,9 +66,9 @@ public abstract class MarginFactory {
     }
 
     /**
-     * General instance of a {@link MarginFactory} used when the margin's size is set with {@link RecyclerViewDivider.Builder#marginSize(int)}
+     * General instance of a {@link MarginProvider} used when the margin's size is set with {@link RecyclerViewDivider.Builder#marginSize(int)}
      */
-    private static class General extends MarginFactory {
+    private static class General extends MarginProvider {
         private final int marginSize;
 
         General(int marginSize) {

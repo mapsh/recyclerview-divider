@@ -9,20 +9,20 @@ import android.support.v4.content.ContextCompat;
 /**
  * Factory used to specify a custom logic to use different drawables as divider.
  * <br>
- * You can add a custom {@link DrawableFactory} in your {@link com.mapsh.recyclerview.divider.RecyclerViewDivider.Builder} using
- * {@link com.mapsh.recyclerview.divider.RecyclerViewDivider.Builder#drawableFactory(DrawableFactory)} method
+ * You can add a custom {@link DrawableProvider} in your {@link RecyclerViewDivider.Builder} using
+ * {@link RecyclerViewDivider.Builder#drawableFactory(DrawableProvider)} method
  */
-public abstract class DrawableFactory {
+public abstract class DrawableProvider {
 
-    private static DrawableFactory defaultFactory;
+    private static DrawableProvider defaultFactory;
 
     /**
-     * Creates a singleton instance of a default {@link DrawableFactory} to avoid multiple instance of the same class
+     * Creates a singleton instance of a default {@link DrawableProvider} to avoid multiple instance of the same class
      *
      * @param context current context
      * @return factory with default values
      */
-    public static synchronized DrawableFactory getDefault(@NonNull Context context) {
+    public static synchronized DrawableProvider getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
             defaultFactory = new Default(context);
         }
@@ -30,12 +30,12 @@ public abstract class DrawableFactory {
     }
 
     /**
-     * Creates a new {@link DrawableFactory} with equal drawable resource for all dividers
+     * Creates a new {@link DrawableProvider} with equal drawable resource for all dividers
      *
      * @param drawable resource for all dividers
      * @return factory with same values for each divider
      */
-    public static DrawableFactory getGeneralFactory(@NonNull Drawable drawable) {
+    public static DrawableProvider getGeneralFactory(@NonNull Drawable drawable) {
         return new General(drawable);
     }
 
@@ -51,9 +51,9 @@ public abstract class DrawableFactory {
     public abstract Drawable drawableForItem(int groupCount, int groupIndex);
 
     /**
-     * Default instance of a {@link DrawableFactory}
+     * Default instance of a {@link DrawableProvider}
      */
-    private static class Default extends DrawableFactory {
+    private static class Default extends DrawableProvider {
         private final Drawable defaultDrawable;
 
         Default(@NonNull Context context) {
@@ -67,10 +67,10 @@ public abstract class DrawableFactory {
     }
 
     /**
-     * General instance of a {@link DrawableFactory} used when the drawable is set with {@link com.mapsh.recyclerview.divider.RecyclerViewDivider.Builder#color(int)}
-     * or with {@link com.mapsh.recyclerview.divider.RecyclerViewDivider.Builder#drawable(Drawable)}
+     * General instance of a {@link DrawableProvider} used when the drawable is set with {@link RecyclerViewDivider.Builder#color(int)}
+     * or with {@link RecyclerViewDivider.Builder#drawable(Drawable)}
      */
-    private static class General extends DrawableFactory {
+    private static class General extends DrawableProvider {
         private final Drawable drawable;
 
         General(@NonNull Drawable drawable) {

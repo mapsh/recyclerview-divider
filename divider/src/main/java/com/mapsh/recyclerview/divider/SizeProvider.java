@@ -11,20 +11,20 @@ import android.support.v7.widget.RecyclerView;
  * <br>
  * Size is referred to the height of an horizontal divider and to the width of a vertical divider.
  * <br>
- * You can add a custom {@link SizeFactory} in your {@link RecyclerViewDivider.Builder} using
- * {@link RecyclerViewDivider.Builder#sizeFactory(SizeFactory)} method
+ * You can add a custom {@link SizeProvider} in your {@link RecyclerViewDivider.Builder} using
+ * {@link RecyclerViewDivider.Builder#sizeFactory(SizeProvider)} method
  */
-public abstract class SizeFactory {
+public abstract class SizeProvider {
 
     private static Default defaultFactory;
 
     /**
-     * Creates a singleton instance of a default {@link SizeFactory} to avoid multiple instance of the same class
+     * Creates a singleton instance of a default {@link SizeProvider} to avoid multiple instance of the same class
      *
      * @param context current context
      * @return factory with default values
      */
-    public static synchronized SizeFactory getDefault(@NonNull Context context) {
+    public static synchronized SizeProvider getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
             defaultFactory = new Default(context);
         }
@@ -32,12 +32,12 @@ public abstract class SizeFactory {
     }
 
     /**
-     * Creates a new {@link SizeFactory} with equal size for all dividers
+     * Creates a new {@link SizeProvider} with equal size for all dividers
      *
      * @param size dividers' size
      * @return factory with same values for each divider
      */
-    public static SizeFactory getGeneralFactory(int size) {
+    public static SizeProvider getGeneralFactory(int size) {
         return new General(size);
     }
 
@@ -55,9 +55,9 @@ public abstract class SizeFactory {
     public abstract int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex);
 
     /**
-     * Default instance of a {@link SizeFactory}
+     * Default instance of a {@link SizeProvider}
      */
-    private static class Default extends SizeFactory {
+    private static class Default extends SizeProvider {
         private final int defaultSize;
 
         Default(@NonNull Context context) {
@@ -81,9 +81,9 @@ public abstract class SizeFactory {
     }
 
     /**
-     * General instance of a {@link SizeFactory} used when the size is set with {@link RecyclerViewDivider.Builder#size(int)}
+     * General instance of a {@link SizeProvider} used when the size is set with {@link RecyclerViewDivider.Builder#size(int)}
      */
-    private static class General extends SizeFactory {
+    private static class General extends SizeProvider {
         private final int size;
 
         General(int size) {

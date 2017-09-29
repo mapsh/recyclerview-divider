@@ -8,11 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Factory used to specify a custom logic to set visibility for each divider.
  * <br>
- * You can add a custom {@link VisibilityFactory} in your {@link RecyclerViewDivider.Builder} using
- * {@link RecyclerViewDivider.Builder#visibilityFactory(VisibilityFactory)} method
+ * You can add a custom {@link VisibilityProvider} in your {@link RecyclerViewDivider.Builder} using
+ * {@link RecyclerViewDivider.Builder#visibilityFactory(VisibilityProvider)} method
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class VisibilityFactory {
+public abstract class VisibilityProvider {
 
     public static final int SHOW_NONE = 0;
     public static final int SHOW_ITEMS_ONLY = 1;
@@ -36,14 +36,14 @@ public abstract class VisibilityFactory {
         // empty annotation body
     }
 
-    private static VisibilityFactory defaultFactory;
+    private static VisibilityProvider defaultFactory;
 
     /**
-     * Creates a singleton instance of a default {@link VisibilityFactory} to avoid multiple instance of the same class
+     * Creates a singleton instance of a default {@link VisibilityProvider} to avoid multiple instance of the same class
      *
      * @return factory with default values
      */
-    public static synchronized VisibilityFactory getDefault() {
+    public static synchronized VisibilityProvider getDefault() {
         if (defaultFactory == null) {
             defaultFactory = new Default();
         }
@@ -51,9 +51,9 @@ public abstract class VisibilityFactory {
     }
 
     /**
-     * @return a new {@link VisibilityFactory} that will now show last divider.
+     * @return a new {@link VisibilityProvider} that will now show last divider.
      */
-    public static VisibilityFactory getLastItemInvisibleFactory() {
+    public static VisibilityProvider getLastItemInvisibleFactory() {
         return new LastItemInvisible();
     }
 
@@ -71,9 +71,9 @@ public abstract class VisibilityFactory {
     int displayDividerForItem(int groupCount, int groupIndex);
 
     /**
-     * Default instance of a {@link VisibilityFactory}
+     * Default instance of a {@link VisibilityProvider}
      */
-    private static class Default extends VisibilityFactory {
+    private static class Default extends VisibilityProvider {
         Default() {
             // empty constructor
         }
@@ -91,7 +91,7 @@ public abstract class VisibilityFactory {
      * <br>
      * Warning: when the spanCount is major than 1, only the divider after the last group will be hidden. This factory will not affect items' dividers.
      */
-    private static class LastItemInvisible extends VisibilityFactory {
+    private static class LastItemInvisible extends VisibilityProvider {
         LastItemInvisible() {
             // empty constructor
         }
