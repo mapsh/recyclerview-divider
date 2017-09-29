@@ -132,6 +132,6 @@ Step 2. Add the dependency [![](https://jitpack.io/v/mapsh/recyclerview-divider.
 
 ```
 	dependencies {
-	        compile 'com.github.mapsh:recyclerview-divider:lasted_version'
+	        compile 'com.github.mapsh:recyclerview-divider:(https://jitpack.io/#mapsh/recyclerview-divider)'
 	}
 ```
