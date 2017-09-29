@@ -116,23 +116,22 @@ Integration
 
 You can download a jar from GitHub's [releases page][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
 
-### Gradle ###
+### depend
 
-```gradle
-dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.3.3'
-}
+Step 1. Add the JitPack repository to your build file
+Add it in your root build.gradle at the end of repositories:
 ```
-
-### Maven ###
-
-```xml
-<dependency>
-  <groupId>com.github.mapsh</groupId>
-  <artifactId>recycler-view-divider</artifactId>
-  <version>1.3.3</version>
-  <type>pom</type>
-</dependency>
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
 ```
+Step 2. Add the dependency [![](https://jitpack.io/v/mapsh/recyclerview-divider.svg)](https://jitpack.io/#mapsh/recyclerview-divider)
 
-[2]: https://github.mapsh.recyclerview.divider/releases
+```
+	dependencies {
+	        compile 'com.github.mapsh:recyclerview-divider:lasted_version'
+	}
+```
