@@ -114,9 +114,7 @@ Compatibility
 Integration
 ------
 
-You can download a jar from GitHub's [releases page][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
-
-### depend
+# depend
 
 Step 1. Add the JitPack repository to your build file
 Add it in your root build.gradle at the end of repositories:
@@ -132,6 +130,6 @@ Step 2. Add the dependency [![](https://jitpack.io/v/mapsh/recyclerview-divider.
 
 ```
 	dependencies {
-	        compile 'com.github.mapsh:recyclerview-divider:(https://jitpack.io/#mapsh/recyclerview-divider)'
+	        compile 'com.github.mapsh:recyclerview-divider:lasted_version'
 	}
 ```
